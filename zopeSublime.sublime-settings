@@ -1,0 +1,27 @@
+{
+    // type_ops can be "restart", "stop", "start"
+    "type_ops": "restart",
+    "show_log": false,
+    "simple_alert": true,
+    "diff_days": "1",
+    "extensions": ["js", "css", "py", "zpt", "html", "dtml", "sql"],
+    "syntaxes": ["JavaScript", "Python", "HTML", "CSS", "PostgreSQL", "SQL"],
+    // Number of seconds to wait before parsin output of zope's eventlog
+    "wait_time": 3,
+    "ops":[
+        {
+            // List of directories to execute the restart
+            // Eg: ["/src/", "/home/user/Documents"]
+            "Directories": [],
+            // Use especific shell script on zope ops. It will pass 2 parameter to the script
+            // $1 will be the operation [restart, start, stop]
+            // $2 will be the number of days to diff
+            // Eg.: "/home/user/script/script.sh"
+            "zopectl": "",
+            // List of folders of your zope installation, but before the bin folder
+            // containing zopectl
+            // Eg: "/home/user/zope/"
+            "zope_folder": ""
+        }
+    ]
+}
