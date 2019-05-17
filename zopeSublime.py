@@ -1,12 +1,16 @@
+# -*- coding: iso-8859-1 -*-
 import sublime
 import sublime_plugin
 import subprocess as sub
 import re
 from time import sleep
+import datetime
 
 
 class ZopeSublime(sublime_plugin.EventListener):
     """Plugin for sublime text 3."""
+
+    RUN_END = None
 
     def on_post_save_async(self, view):
         """Run after save on another thread."""
@@ -21,6 +25,12 @@ class ZopeSublime(sublime_plugin.EventListener):
         self.syntaxes = self.settings.get('syntaxes', [])
         self.operations = self.settings.get('ops', [])
         self.log_output = None
+        self.RUN = datetime.datetime.now()
+        self.RUN_END = self.RUN_END and self.RUN_END or None
+
+        if self.RUN_END:
+            if (self.RUN - self.RUN_END).total_seconds() < 2:
+                return
 
         if not self.operations or not self.check_operations():
             raise Exception("Not configured!")
@@ -52,11 +62,7 @@ class ZopeSublime(sublime_plugin.EventListener):
 
             self.check_log(ops=item)
 
-        # sublime.active_window().show_input_panel(
-        #     "Zope Ops:", self.type_ops, self.select_ops, None, None)
-
-        # sublime.message_dialog(file)
-        # sublime.message_dialog(syntax)
+        self.RUN_END = datetime.datetime.now()
 
     def check_operations(self):
         """Check if the configuration is ok."""
